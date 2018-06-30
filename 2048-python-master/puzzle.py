@@ -1,5 +1,6 @@
 from tkinter import *
 from logic import *
+from ai import *
 from random import *
 
 SIZE = 500
@@ -77,6 +78,7 @@ class GameGrid(Frame):
 
         self.matrix=add_two(self.matrix)
         self.matrix=add_two(self.matrix)
+        print(repr(input_Layer(self.matrix)))
 
     def update_grid_cells(self):
         for i in range(GRID_LEN):
@@ -96,6 +98,7 @@ class GameGrid(Frame):
             self.score+=score_add#加分數
             if done:
                 self.matrix = add_two(self.matrix)
+                print(repr(input_Layer(self.matrix)))
                 self.update_grid_cells()
                 done=False
                 if game_state(self.matrix)=='win':
