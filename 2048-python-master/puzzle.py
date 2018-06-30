@@ -6,6 +6,7 @@ SIZE = 500
 GRID_LEN = 4
 GRID_PADDING = 10
 
+BACKGROUND_COLOR_BLANK = "#ffffff"
 BACKGROUND_COLOR_GAME = "#92877d"
 BACKGROUND_COLOR_CELL_EMPTY = "#9e948a"
 BACKGROUND_COLOR_DICT = {   2:"#eee4da", 4:"#ede0c8", 8:"#f2b179", 16:"#f59563", \
@@ -49,7 +50,14 @@ class GameGrid(Frame):
     def init_grid(self):
         background = Frame(self, bg=BACKGROUND_COLOR_GAME, width=SIZE, height=SIZE)
         background.grid()
-        for i in range(GRID_LEN):
+
+        cell = Frame(background, bg=BACKGROUND_COLOR_BLANK, width=SIZE/GRID_LEN, height=SIZE/GRID_LEN)
+        cell.grid(row=0, columnspan=4, padx=GRID_PADDING, pady=GRID_PADDING)
+        t = Label(master=cell, text="0", bg=BACKGROUND_COLOR_BLANK, justify=RIGHT, font=FONT, width=20, height=2)
+        t.grid()
+        self.scoreboard=t
+        
+        for i in range(1,GRID_LEN+1):
             grid_row = []
             for j in range(GRID_LEN):
                 cell = Frame(background, bg=BACKGROUND_COLOR_CELL_EMPTY, width=SIZE/GRID_LEN, height=SIZE/GRID_LEN)
@@ -78,6 +86,7 @@ class GameGrid(Frame):
                     self.grid_cells[i][j].configure(text="", bg=BACKGROUND_COLOR_CELL_EMPTY)
                 else:
                     self.grid_cells[i][j].configure(text=str(new_number), bg=BACKGROUND_COLOR_DICT[new_number], fg=CELL_COLOR_DICT[new_number])
+        self.scoreboard.configure(text="score: " + str(self.score))                  
         self.update_idletasks()
         
     def key_down(self, event):
@@ -85,7 +94,6 @@ class GameGrid(Frame):
         if key in self.commands:
             self.matrix,done,score_add = self.commands[repr(event.char)](self.matrix)
             self.score+=score_add#加分數
-            print(self.score)
             if done:
                 self.matrix = add_two(self.matrix)
                 self.update_grid_cells()
