@@ -37,6 +37,8 @@ class GameGrid(Frame):
         self.commands = {   KEY_UP: up, KEY_DOWN: down, KEY_LEFT: left, KEY_RIGHT: right,
                             KEY_UP_ALT: up, KEY_DOWN_ALT: down, KEY_LEFT_ALT: left, KEY_RIGHT_ALT: right }
 
+        self.score=0#分數
+        
         self.grid_cells = []
         self.init_grid()
         self.init_matrix()
@@ -81,7 +83,9 @@ class GameGrid(Frame):
     def key_down(self, event):
         key = repr(event.char)
         if key in self.commands:
-            self.matrix,done = self.commands[repr(event.char)](self.matrix)
+            self.matrix,done,score_add = self.commands[repr(event.char)](self.matrix)
+            self.score+=score_add#加分數
+            print(self.score)
             if done:
                 self.matrix = add_two(self.matrix)
                 self.update_grid_cells()
