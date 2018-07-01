@@ -43,6 +43,7 @@ class GameGrid(Frame):
         
         self.grid_cells = []
         self.init_grid()
+        self.ann = ann()
         self.init_matrix()
         self.update_grid_cells()
         
@@ -78,7 +79,7 @@ class GameGrid(Frame):
 
         self.matrix=add_two(self.matrix)
         self.matrix=add_two(self.matrix)
-        print(repr(input_Layer(self.matrix)))
+        print(repr(self.ann.input_layer(self.matrix)))
 
     def update_grid_cells(self):
         for i in range(GRID_LEN):
@@ -98,7 +99,7 @@ class GameGrid(Frame):
             self.score+=score_add#加分數
             if done:
                 self.matrix = add_two(self.matrix)
-                print(repr(input_Layer(self.matrix)))
+                print(repr(self.ann.input_layer(self.matrix)))
                 self.update_grid_cells()
                 done=False
                 if game_state(self.matrix)=='win':
