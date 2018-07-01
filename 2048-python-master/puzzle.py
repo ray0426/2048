@@ -40,6 +40,8 @@ class GameGrid(Frame):
         self.commands = {   KEY_UP: up, KEY_DOWN: down, KEY_LEFT: left, KEY_RIGHT: right,
                             KEY_UP_ALT: up, KEY_DOWN_ALT: down, KEY_LEFT_ALT: left, KEY_RIGHT_ALT: right }
 
+        self.commands2 = {   0: up, 1: down, 2: left, 3: right}
+
         self.score=0#分數
         
         self.grid_cells = []
@@ -99,8 +101,12 @@ class GameGrid(Frame):
     def key_down(self, event):
         key = repr(event.char)
         if key in self.commands:
-            self.matrix,done,score_add = self.commands[repr(event.char)](self.matrix)
+            move, X, result1, result2 = self.ann.predict(self.matrix)
+            self.matrix,done,score_add = self.commands2[move](self.matrix)
             self.score+=score_add#加分數
+            
+            self.ann.back_propagation_output(self.score, score_add, move, X, result1, result2)
+            
             if done:
                 self.matrix = add_two(self.matrix)
                 print(repr(self.ann.input_layer(self.matrix)))
@@ -121,6 +127,7 @@ class GameGrid(Frame):
         self.matrix[index[0]][index[1]] = 2
 
     def run_ann(self):
+        #self.ann.predict(self.matrix)
         self.matrix,done,score_add = self.commands[repr(event.char)](self.matrix)
         self.score+=score_add#加分數
         if done:
