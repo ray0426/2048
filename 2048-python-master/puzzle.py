@@ -2,6 +2,7 @@ from tkinter import *
 from logic import *
 from ai import *
 from random import *
+import time
 
 SIZE = 500
 GRID_LEN = 4
@@ -48,6 +49,9 @@ class GameGrid(Frame):
         self.update_grid_cells()
         
         self.mainloop()
+        #while True:
+        #    self.run_ann()
+        #    time.sleep(3)
 
     def init_grid(self):
         background = Frame(self, bg=BACKGROUND_COLOR_GAME, width=SIZE, height=SIZE)
@@ -115,5 +119,20 @@ class GameGrid(Frame):
         while self.matrix[index[0]][index[1]] != 0:
             index = (self.gen(), self.gen())
         self.matrix[index[0]][index[1]] = 2
+
+    def run_ann(self):
+        self.matrix,done,score_add = self.commands[repr(event.char)](self.matrix)
+        self.score+=score_add#加分數
+        if done:
+            self.matrix = add_two(self.matrix)
+            print(repr(self.ann.input_layer(self.matrix)))
+            self.update_grid_cells()
+            done=False
+            if game_state(self.matrix)=='win':
+                self.grid_cells[1][1].configure(text="You",bg=BACKGROUND_COLOR_CELL_EMPTY)
+                self.grid_cells[1][2].configure(text="Win!",bg=BACKGROUND_COLOR_CELL_EMPTY)
+            if game_state(self.matrix)=='lose':
+                self.grid_cells[1][1].configure(text="You",bg=BACKGROUND_COLOR_CELL_EMPTY)
+                self.grid_cells[1][2].configure(text="Lose!",bg=BACKGROUND_COLOR_CELL_EMPTY)
 
 gamegrid = GameGrid()
