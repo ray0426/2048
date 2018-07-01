@@ -12,7 +12,6 @@ class ann():
     def __init__(self):
         self.hidden_layer_weight = self.init_hidden_weight()
         self.output_layer_weight = self.init_output_weight()
-        print(self.hidden_layer_weight[0].weights)
 
     def input_layer(self, mat):
         X = []
@@ -36,7 +35,7 @@ class ann():
         hidden_layer = []
         
         for i in range(hidden_layer_amount):
-            self.neural = neural(1/math.sqrt(float(hidden_layer_amount)))
+            self.neural = neural(16)
             hidden_layer.append(self.neural)
         return hidden_layer
 
@@ -52,9 +51,8 @@ class ann():
         output_layer = []
         
         for i in range(4):
-            self.neural = neural(1/math.sqrt(float(hidden_layer_amount)))
+            self.neural = neural(hidden_layer_amount)
             output_layer.append(self.neural)
-            print(output_layer[i].weights)
         return output_layer
 
     def predict(self, mat):
@@ -87,24 +85,17 @@ class ann():
             print(self.output_layer_weight[i].weights[len(result1)])
             delta_result2_weight.append(delta_result2_weight_one)
         """
-        delta_result2_weight_one = []
-        for j in range(len(result1)):
-            delta_result2_weight_one.append(result1[j]*eta*delta)
-            self.output_layer_weight[move].weights[j]+=result1[j]*eta*delta
-            print(self.output_layer_weight[move].weights[j])
-        delta_result2_weight_one.append((-1)*eta*delta)
-        self.output_layer_weight[move].weights[len(result1)]+=(-1)*eta*delta
-        print(self.output_layer_weight[move].weights[len(result1)])
+        
 
     def cost(self, score):
         return ((goal-score)/goal)
     
 class neural():
-    def __init__(self, init):
-        self.weights = self.init_weights(init)
-    def init_weights(self, init):
+    def __init__(self, d):
+        self.weights = self.init_weights(d)
+    def init_weights(self, d):
         weights = []
-        for i in range(17):
-            weights.append(init)
+        for i in range(d+1):
+            weights.append(uniform(-1*math.pow(d, (-1/2)),math.pow(d, (-1/2))))
         return weights
             
